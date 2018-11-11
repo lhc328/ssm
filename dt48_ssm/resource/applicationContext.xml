@@ -12,13 +12,21 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
+	<context:component-scan base-package="cn.java.service.impl" />
+	
+	<!-- 读取database.properties文件 -->
+	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 指定property文件所在路徑 -->
+		<property name="location" value="classpath:database.properties"></property>
+	</bean>
+	
 	<!-- 配置数据源 -->
 	<bean id="basicDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<!-- 配置driverClassName url username password -->
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql:///dt48"></property>
-		<property name="username" value="root"></property>
-		<property name="password" value="123"></property>
+		<property name="driverClassName" value="${driver}"></property>
+		<property name="url" value="${url}"></property>
+		<property name="username" value="${username}"></property>
+		<property name="password" value="${password}"></property>
 	</bean>
 	
 	<!-- 配置扫描保存sql语句的局部xml文件 -->
@@ -26,7 +34,7 @@
 		<!-- 指定数据源 -->
 		<property name="dataSource" ref="basicDataSource"></property>
 		<!-- 指定局部xml文件的位置 -->
-		<property name="mapperLocations" value="classpath:cn/java/mapper/*.xml"></property>
+		<property name="mapperLocations" value="classpath*:cn/java/mapper/*.xml"></property>
 	</bean>
 	
 	<!-- 扫描mapper接口类，并且将接口类与xml文件相关联 -->
@@ -34,5 +42,7 @@
 		<!-- 指定mapper接口类存放的位置 -->
 		<property name="basePackage" value="cn.java.mapper"></property>
 	</bean>
+	
 </beans>
+       
        
