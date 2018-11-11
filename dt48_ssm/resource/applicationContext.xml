@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<!-- 配置数据源 -->
+	<bean id="basicDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<!-- 配置driverClassName url username password -->
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql:///dt48"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+	
+	<!-- 配置扫描保存sql语句的局部xml文件 -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 指定数据源 -->
+		<property name="dataSource" ref="basicDataSource"></property>
+		<!-- 指定局部xml文件的位置 -->
+		<property name="mapperLocation" value="classpath:cn/java/mapper/*.xml"></property>
+	</bean>
+	
+	<!-- 扫描mapper接口类，并且将接口类与xml文件相关联 -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定mapper接口类存放的位置 -->
+		<property name="basicPackage" value="cn.java.mapper"></property>
+	</bean>
+</beans>
+       
